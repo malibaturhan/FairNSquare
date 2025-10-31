@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float smoothTime = 0.05f;
     [SerializeField] private Ease easing = Ease.OutQuad;
 
-    float tempXPoint = -1;
-    float currentTargetRotation;
 
     void Start()
     {
@@ -34,11 +32,11 @@ public class PlayerController : MonoBehaviour
         float rotationAmount = GetRotationAmount();
         if (rotationAmount != 0)
         {
-            Quaternion rotation = Quaternion.Euler(0, 0, rotationAmount * rotationSpeed * Time.deltaTime);
-            transform.rotation = rotation;
+            transform.rotation = Quaternion.Euler(new Vector3(0,0, rotationAmount *rotationSpeed));
         }
     }
 
+    float tempXPoint = -1;
     private float GetRotationAmount()
     {
         float difference;

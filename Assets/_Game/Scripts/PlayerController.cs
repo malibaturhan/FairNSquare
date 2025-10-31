@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
                 tempXPoint = Input.GetTouch(0).position.x;
             }
             difference = Input.GetTouch(0).position.x - tempXPoint;
-            Debug.Log(difference);
+            //Debug.Log(difference);
             return difference;
 
         }

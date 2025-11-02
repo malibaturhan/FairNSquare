@@ -17,4 +17,7 @@ public class GunSO : ScriptableObject
     public Color color;
     public int unlockCost;
     public bool isUnlocked;
+
+    [Header("Behaviour")]
+    public GunBehaviour gunBehaviour;
 }

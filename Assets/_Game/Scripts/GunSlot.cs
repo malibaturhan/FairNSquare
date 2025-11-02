@@ -19,8 +19,24 @@ public class GunSlot : MonoBehaviour
         RIGHT
     }
 
+    [Header(">>> Runtime Gun Parameters (DON'T CHANGE BY HAND) <<<")]
+    private Sprite gunSprite;
+    private float currentFireRate;
+    private float currentDetectionRange;
+    private string weaponName;
+    private float currentDamage;
+    private float currentCriticalChance;
+    private float currentCriticalBonus;
+    private int currentGoThroughEnemiesCount;
+    private GameObject bulletPrefab;
+    private Color currentColor;
+    private bool isUnlocked;
+    private int currentUnlockCost;
+    private float timeSinceFiring = 0f;
+
+
     [Header("***Elements***")]
-    [SerializeField] private GunSO gunInSlot;
+    [SerializeField] public GunSO GunInSlot;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private PolygonCollider2D polygonCollider;
 
@@ -33,6 +49,7 @@ public class GunSlot : MonoBehaviour
 
     void Start()
     {
+
         polygonCollider.isTrigger = true;
         SetOrientation();
         CheckSlot();
@@ -40,49 +57,50 @@ public class GunSlot : MonoBehaviour
 
     private void SetOrientation()
     {
-      
+
         switch (orientation)
         {
             case GunSlotOrientation.TOP:
                 direction = transform.TransformDirection(Vector2.up);
+                spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
             case GunSlotOrientation.BOTTOM:
                 direction = transform.TransformDirection(Vector2.down);
+                spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 break;
             case GunSlotOrientation.RIGHT:
                 direction = transform.TransformDirection(Vector2.right);
+                spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 break;
             case GunSlotOrientation.LEFT:
                 direction = transform.TransformDirection(Vector2.left);
+                spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, -180);
                 break;
-        
+
+        }
     }
-}
 
 
     void Update()
     {
         SetOrientation();
-
-        if (gunInSlot != null && currentState == GunSlotStates.Active) 
+        timeSinceFiring -= Time.deltaTime;
+        if (GunInSlot != null && currentState == GunSlotStates.Active)
         {
-            //Fire();
+            if (timeSinceFiring <= 0f)
+            {
+                Fire();
+                timeSinceFiring = 1f / currentFireRate;
+                Debug.LogWarning($"timesincefiring set to {timeSinceFiring}");
+            }
         }
     }
 
-    //private void TryFire()
-    //{
-    //    Transform[] enemies = GetEnemiesInSight();
-    //}
 
-    private Transform[] GetEnemiesInSight()
+    private void Fire()
     {
-        throw new NotImplementedException();
-    }
+        GunInSlot.gunBehaviour.Fire(this, direction);
 
-    private void Fire(Vector2 direction)
-    {
-        Debug.Log("Firing");
     }
 
     private void OnSlotStateChanged(GunSlotStates newGunSlotState)
@@ -99,7 +117,7 @@ public class GunSlot : MonoBehaviour
     }
     private void CheckSlot()
     {
-        if (gunInSlot != null) 
+        if (GunInSlot != null)
         {
             SetGun();
         }
@@ -107,14 +125,28 @@ public class GunSlot : MonoBehaviour
 
     private void SetGun()
     {
-        spriteRenderer.sprite = gunInSlot.gunSprite;
+        InitializeFromSO();
+        spriteRenderer.sprite = GunInSlot.gunSprite;
         OnSlotStateChanged(GunSlotStates.Active);
     }
 
-    private void SetDetectionColliderLength()
-    {
 
+    private void InitializeFromSO()
+    {
+        currentFireRate = GunInSlot.fireRate;
+        gunSprite = GunInSlot.gunSprite;
+        currentDetectionRange = GunInSlot.detectionRange;
+        weaponName = GunInSlot.weaponName;
+        currentDamage = GunInSlot.damage;
+        currentCriticalChance = GunInSlot.criticalChance;
+        currentCriticalBonus = GunInSlot.criticalDamageAdditionPercentage;
+        currentGoThroughEnemiesCount = GunInSlot.goThroughEnemiesCount;
+        bulletPrefab = GunInSlot.bulletPrefab;
+        currentColor = GunInSlot.color;
+        isUnlocked = GunInSlot.isUnlocked;
+        currentUnlockCost = GunInSlot.unlockCost;
     }
+
 
     private void OnDrawGizmos()
     {

@@ -20,9 +20,14 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private float elapsedTimeSinceLevelStarted;
 
+    [Header("%%%Enemies%%%")]
+    [SerializeField] private GameObject zombie;
+
     [Header("***Events for level***")]
     [SerializeField] private LevelEventData[] levelEventDatas;
 
+    [Header("---Runtime Variables---")]
+    [SerializeField] private float timeSinceLastSpawn;
 
 
     void Start()
@@ -38,6 +43,23 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     void Update()
     {
         PassLevelTime();
+        
+    }
+
+    private void FixedUpdate()
+    {
+        timeSinceLastSpawn += Time.fixedDeltaTime;
+        if(timeSinceLastSpawn > intervalBetweenSpawns) 
+        {
+            timeSinceLastSpawn = 0f;
+            SpawnEnemy();
+        }
+    }
+
+    private void SpawnEnemy()
+    {
+        var enemy = Instantiate(zombie, spawnPoint, Quaternion.identity);
+        Debug.Log("***********************ZOMBIE CREATED");
     }
 
     private void PassLevelTime()

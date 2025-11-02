@@ -7,7 +7,7 @@ public class ShotgunBehaviour : GunBehaviour
     public float spreadAngle = 15f;
     public float bulletSpeed = 8f;
 
-    public override void Fire(GunSlot slot, Vector2 direction)
+    public override void Fire(GunSlot slot, Vector2 direction, Transform bulletContainer)
     {
         if (slot == null || slot.GunInSlot.bulletPrefab == null)
             return;
@@ -19,6 +19,7 @@ public class ShotgunBehaviour : GunBehaviour
             Vector2 spreadDir = rotation * direction;
 
             GameObject bullet = Object.Instantiate(slot.GunInSlot.bulletPrefab, slot.transform.position, Quaternion.identity);
+            bullet.transform.parent = bulletContainer;
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
                 rb.linearVelocity = spreadDir * bulletSpeed;

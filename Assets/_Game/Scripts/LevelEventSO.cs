@@ -6,4 +6,5 @@ public class LevelEventSO : ScriptableObject
     public WaveEventType WaveEventType;
     public int NumberOfEnemies;
     public GameObject[] possibleEnemyPrefabs;
+    public Sprite EventBackgroundSprite;
 }

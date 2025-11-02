@@ -119,6 +119,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &50288746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 50288747}
+  m_Layer: 0
+  m_Name: ---CONTAINERS---
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &50288747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50288746}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 989306852}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &74878101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -139,6 +171,10 @@ PrefabInstance:
       propertyPath: spriteRenderer
       value: 
       objectReference: {fileID: 1599071868}
+    - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
+      propertyPath: bulletContainer
+      value: 
+      objectReference: {fileID: 989306852}
     - target: {fileID: 1432041197826943985, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
       propertyPath: m_Name
       value: RightGunSlot
@@ -217,6 +253,10 @@ PrefabInstance:
       propertyPath: spriteRenderer
       value: 
       objectReference: {fileID: 1062387887}
+    - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
+      propertyPath: bulletContainer
+      value: 
+      objectReference: {fileID: 989306852}
     - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
       propertyPath: emptySlotSprite
       value: 
@@ -650,6 +690,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: {x: -10, y: 10}
   length: {x: 0, y: 0}
+--- !u!1 &989306851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 989306852}
+  m_Layer: 0
+  m_Name: BulletContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &989306852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989306851}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 50288747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1062387887 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7068415563333241677, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
@@ -806,13 +877,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnparentOnAwake: 1
-  spawnPoint: {x: 0, y: 2}
-  intervalBetweenSpawns: 0
+  spawnPoint: {x: 0, y: 10}
+  intervalBetweenSpawns: 1
   enemyPrefabs: []
   elapsedTimeSinceLevelStarted: 0
+  zombie: {fileID: 909863283334773596, guid: 9941dfd4f542fe7439155961ba626f98, type: 3}
   levelEventDatas:
   - TimeToTrigger: 0
     EventToTrigger: {fileID: 0}
+  timeSinceLastSpawn: 0
 --- !u!212 &1599071868 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7068415563333241677, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
@@ -834,6 +907,10 @@ PrefabInstance:
       propertyPath: spriteRenderer
       value: 
       objectReference: {fileID: 1066074016}
+    - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
+      propertyPath: bulletContainer
+      value: 
+      objectReference: {fileID: 989306852}
     - target: {fileID: 1432041197826943985, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
       propertyPath: m_Name
       value: TopGunSlot
@@ -1057,6 +1134,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
+      propertyPath: bulletContainer
+      value: 
+      objectReference: {fileID: 989306852}
+    - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
       propertyPath: polygonCollider
       value: 
       objectReference: {fileID: 399389535}
@@ -1122,3 +1203,4 @@ SceneRoots:
   - {fileID: 127391479}
   - {fileID: 1569972529}
   - {fileID: 3584581633271924758}
+  - {fileID: 50288747}

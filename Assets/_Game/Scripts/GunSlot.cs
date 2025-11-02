@@ -39,6 +39,7 @@ public class GunSlot : MonoBehaviour
     [SerializeField] public GunSO GunInSlot;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private PolygonCollider2D polygonCollider;
+    [SerializeField] private Transform bulletContainer;
 
     [Header("***Settings")]
     [SerializeField] private Sprite emptySlotSprite;
@@ -91,7 +92,7 @@ public class GunSlot : MonoBehaviour
             {
                 Fire();
                 timeSinceFiring = 1f / currentFireRate;
-                Debug.LogWarning($"timesincefiring set to {timeSinceFiring}");
+                //Debug.LogWarning($"timesincefiring set to {timeSinceFiring}");
             }
         }
     }
@@ -99,7 +100,7 @@ public class GunSlot : MonoBehaviour
 
     private void Fire()
     {
-        GunInSlot.gunBehaviour.Fire(this, direction);
+        GunInSlot.gunBehaviour.Fire(this, direction, bulletContainer);
 
     }
 

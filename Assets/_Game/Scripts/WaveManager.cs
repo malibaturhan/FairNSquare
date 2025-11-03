@@ -1,6 +1,7 @@
-using UnityCommunity.UnitySingleton;
+﻿using UnityCommunity.UnitySingleton;
 using UnityEngine;
-using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public enum WaveEventType
 {
@@ -17,6 +18,7 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     [SerializeField] private float intervalBetweenSpawns;
 
     [Header("***Elements***")]
+    [SerializeField] private Transform enemyContainer;
     [SerializeField] private GameObject[] enemyPrefabs;
     [SerializeField] private float elapsedTimeSinceLevelStarted;
 
@@ -25,9 +27,12 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
 
     [Header("***Events for level***")]
     [SerializeField] private LevelEventData[] levelEventDatas;
+    [SerializeField] private float enemySpawnDistance;
 
     [Header("---Runtime Variables---")]
     [SerializeField] private float timeSinceLastSpawn;
+    [SerializeField] private Queue<int> lastSpawnDegrees = new();
+    [SerializeField] private float degreeDeflection;
 
 
     void Start()
@@ -38,6 +43,7 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     private void StartWave()
     {
         elapsedTimeSinceLevelStarted = 0f;
+        timeSinceLastSpawn = intervalBetweenSpawns - 0.5f;
     }
 
     void Update()
@@ -56,14 +62,34 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
         }
     }
 
+    private int GetEnemySpawnDegree()
+    {
+        if (lastSpawnDegrees.Count < 1) return 0;
+        int degree = 0;
+        double meanDegree = lastSpawnDegrees.Average();
+        degree += (int)meanDegree + 10;
+        return (int)(degree + Mathf.Ceil(Random.Range(0, degreeDeflection)));
+
+    }
+
+    private Vector3 GetEnemySpawnCoordinate()
+    {
+        int degree = GetEnemySpawnDegree();
+        int x = (int)Mathf.Cos(degree);
+        int y = (int)Mathf.Sin(degree);
+        Debug.Log($"ENEMY WILL SPAWN AT {x},{y} DEGREE: {degree}");
+        return new Vector3(x, y, 0) * enemySpawnDistance;
+    }
+
     private void SpawnEnemy()
     {
-        var enemy = Instantiate(zombie, spawnPoint, Quaternion.identity);
-        Debug.Log("***********************ZOMBIE CREATED");
+        var enemy = Instantiate(zombie, GetEnemySpawnCoordinate(), Quaternion.identity);
     }
 
     private void PassLevelTime()
     {
         elapsedTimeSinceLevelStarted += Time.deltaTime;
     }
+
+
 }

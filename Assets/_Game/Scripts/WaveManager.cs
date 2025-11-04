@@ -14,25 +14,24 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
 {
 
     [Header("***Settings***")]
-    [SerializeField] private Vector2 spawnPoint = Vector3.up * 2;
     [SerializeField] private float intervalBetweenSpawns;
+    [SerializeField] private float enemySpawnDistance;
+    [SerializeField] private float degreeDeflection;
 
     [Header("***Elements***")]
     [SerializeField] private Transform enemyContainer;
     [SerializeField] private GameObject[] enemyPrefabs;
-    [SerializeField] private float elapsedTimeSinceLevelStarted;
 
     [Header("%%%Enemies%%%")]
     [SerializeField] private GameObject zombie;
 
     [Header("***Events for level***")]
     [SerializeField] private LevelEventData[] levelEventDatas;
-    [SerializeField] private float enemySpawnDistance;
 
     [Header("---Runtime Variables---")]
+    [SerializeField] private float elapsedTimeSinceLevelStarted;
     [SerializeField] private float timeSinceLastSpawn;
     [SerializeField] private Queue<int> lastSpawnDegrees = new();
-    [SerializeField] private float degreeDeflection;
 
 
     void Start()
@@ -64,21 +63,42 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
 
     private int GetEnemySpawnDegree()
     {
-        if (lastSpawnDegrees.Count < 1) return 0;
-        int degree = 0;
-        double meanDegree = lastSpawnDegrees.Average();
-        degree += (int)meanDegree + 10;
-        return (int)(degree + Mathf.Ceil(Random.Range(0, degreeDeflection)));
+        if (lastSpawnDegrees.Count == 0)
+            return Random.Range(0, 360);
 
+        float sumX = 0f;
+        float sumY = 0f;
+
+        foreach (int deg in lastSpawnDegrees)
+        {
+            float rad = deg * Mathf.Deg2Rad;
+            sumX += Mathf.Cos(rad);
+            sumY += Mathf.Sin(rad);
+        }
+
+        float meanRad = Mathf.Atan2(sumY, sumX);
+        float meanDeg = meanRad * Mathf.Rad2Deg;
+
+        float deflection = Random.Range(-degreeDeflection, degreeDeflection);
+        int result = Mathf.RoundToInt(meanDeg + deflection);
+
+        if (result < 0) result += 360;
+        if (result > 360) result -= 360;
+
+        return result;
     }
 
     private Vector3 GetEnemySpawnCoordinate()
     {
         int degree = GetEnemySpawnDegree();
-        int x = (int)Mathf.Cos(degree);
-        int y = (int)Mathf.Sin(degree);
-        Debug.Log($"ENEMY WILL SPAWN AT {x},{y} DEGREE: {degree}");
-        return new Vector3(x, y, 0) * enemySpawnDistance;
+        float rad = degree * Mathf.Deg2Rad; 
+
+        float x = Mathf.Cos(rad);
+        float y = Mathf.Sin(rad);
+
+        Debug.Log($"ENEMY WILL SPAWN AT {x:F2}, {y:F2} (degree: {degree})");
+
+        return new Vector3(x, y, 0f) * enemySpawnDistance;
     }
 
     private void SpawnEnemy()
@@ -91,5 +111,6 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
         elapsedTimeSinceLevelStarted += Time.deltaTime;
     }
 
+    
 
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IMovable
 {
     [Header("***Settings***")]
     [SerializeField] private float speed;
@@ -22,6 +22,7 @@ public class Bullet : MonoBehaviour
     {
         if (collision.TryGetComponent<IDamagable>(out IDamagable target))
         {
+            Debug.Log($"Bullet deals damage to {target}");
             target.TakeDamage(damage);
             gameObject.transform.SetParent(null);
             Destroy(gameObject);
@@ -44,5 +45,10 @@ public class Bullet : MonoBehaviour
         this.criticalChance = criticalChance;
         this.criticalDamageMultiplier = criticalDamageMultiplier;
         this.passThroughCount = passThroughCount;
+    }
+
+    public void Move(Vector2 direction, float speed)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 
-public abstract class Enemy : MonoBehaviour, IDamagable
+public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
 {
     [Header("***Settings***")]
     [SerializeField] private int health = 10;
     [SerializeField] private int damageToGive = 10;
     [SerializeField] private float delayBetweenHits = 1f;
+    [SerializeField] private float movementFactor = 1f;
     private Coroutine damageCoroutine;
 
     [Header("***Elements***")]
@@ -76,6 +77,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable
         }
     }
 
+  
     public void Move()
     {
         seperationForce = Vector3.zero; // to prevent accumulation
@@ -98,7 +100,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable
     {
         Vector2 dir = (PlayerManager.Instance.transform.position - transform.position).normalized;
         dir += (Vector2)seperationForce.normalized;
-        transform.position += (Vector3)dir * moveSpeed * Time.deltaTime;
+        transform.position += (Vector3)dir * moveSpeed * Time.deltaTime * movementFactor;
     }
 
     private void ApplyCohession()
@@ -160,6 +162,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable
 
     public virtual void TakeDamage(int damageTook)
     {
+        Debug.Log($"{gameObject.name} took damage: {damageTook}");
         health -= damageTook;
         DamageVisual(damageTook);
         if (health <= 0)
@@ -183,5 +186,17 @@ public abstract class Enemy : MonoBehaviour, IDamagable
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+
+    public void SlowDown(float factor, float duration)
+    {
+        StartCoroutine(SlowRoutine(factor, duration));
+    }
+
+    private IEnumerator SlowRoutine(float factor, float duration)
+    {
+        movementFactor = factor;
+        yield return new WaitForSeconds(duration);
+        movementFactor = 1f;
     }
 }

@@ -161,6 +161,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1186251248}
     m_Modifications:
     - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
+      propertyPath: GunInSlot
+      value: 
+      objectReference: {fileID: 11400000, guid: 970c28cfa3224364a84561b6313aefea, type: 2}
+    - target: {fileID: 573605643984049383, guid: 7ae90eb07c0936042a65c8d0031d71c1, type: 3}
       propertyPath: gunInSlot
       value: 
       objectReference: {fileID: 11400000, guid: 970c28cfa3224364a84561b6313aefea, type: 2}
@@ -615,6 +619,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269095fa132213f45a813da80099b336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &198241954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198241955}
+  m_Layer: 0
+  m_Name: GameEventsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &198241955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198241954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1569972529}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &207885799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,6 +1536,7 @@ Transform:
   m_Children:
   - {fileID: 644412556}
   - {fileID: 1586166934}
+  - {fileID: 198241955}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1586166933
@@ -1548,14 +1584,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnparentOnAwake: 1
-  spawnPoint: {x: 0, y: 10}
-  intervalBetweenSpawns: 10
+  spawnPoint: {x: 0, y: 20}
+  intervalBetweenSpawns: 0.2
   enemyContainer: {fileID: 413478376}
   enemyPrefabs: []
   elapsedTimeSinceLevelStarted: 0
   zombie: {fileID: 909863283334773596, guid: 9941dfd4f542fe7439155961ba626f98, type: 3}
   levelEventDatas: []
-  enemySpawnDistance: 2
+  enemySpawnDistance: 20
   timeSinceLastSpawn: 0
   degreeDeflection: 50
 --- !u!212 &1599071868 stripped

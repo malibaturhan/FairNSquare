@@ -20,7 +20,7 @@ public class InputDeviceAutoSwitcher : MonoBehaviour
     private void OnControlsChanged(PlayerInput input)
     {
         // yeni cihazý logla
-        Debug.Log($"Control scheme changed to: {input.currentControlScheme}");
+        //Debug.Log($"Control scheme changed to: {input.currentControlScheme}");
 
         // eðer gamepad baðlantýsý koptuysa veya yeni cihaz klavye ise
         if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)

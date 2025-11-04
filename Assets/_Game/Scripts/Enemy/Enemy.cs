@@ -1,19 +1,23 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using TMPro;
 
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IDamagable
 {
     [Header("***Settings***")]
     [SerializeField] private int health = 10;
     [SerializeField] private int damageToGive = 10;
-
+    [SerializeField] private float delayBetweenHits = 1f;
+    private Coroutine damageCoroutine;
 
     [Header("***Elements***")]
     private Vector2 initialPosition;
     private List<Collider2D> neighbours = new();
+    [SerializeField] TextMeshPro damageTookText;
 
     [Header("+++Movement+++")]
     private ContactFilter2D contactFilter;
@@ -24,6 +28,7 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField] private float alignmentWeight = 1f;
     [SerializeField] private float detectionRange = 1f;
     [SerializeField] private LayerMask EnemyLayerMask;
+
 
     void Start()
     {
@@ -40,26 +45,35 @@ public abstract class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            StartDealingDamage();
+            if (damageCoroutine == null)
+            {
+                damageCoroutine = StartCoroutine(DealDamage());
+            }
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            StopDealingDamage();
+            if (damageCoroutine != null)
+            {
+                StopCoroutine(damageCoroutine);
+                damageCoroutine = null;
+            }
         }
     }
 
-    private void StartDealingDamage()
-    {
-        throw new NotImplementedException();
-    }
 
-    private void StopDealingDamage()
+    private IEnumerator DealDamage()
     {
-        throw new NotImplementedException();
+        while (true)
+        {
+            Debug.Log("HIT PLAYER");
+            PlayerHealth.Instance.TakeDamage(damageToGive);
+            yield return new WaitForSeconds(delayBetweenHits);
+        }
     }
 
     public void Move()
@@ -91,7 +105,7 @@ public abstract class Enemy : MonoBehaviour
     {
         // Make them closer to their mean position
         Vector3 averagePosition = Vector3.zero;
-        foreach (var neighbour in neighbours) 
+        foreach (var neighbour in neighbours)
         {
             averagePosition += neighbour.transform.position;
         }
@@ -147,10 +161,16 @@ public abstract class Enemy : MonoBehaviour
     public virtual void TakeDamage(int damageTook)
     {
         health -= damageTook;
+        DamageVisual(damageTook);
         if (health <= 0)
         {
             Die();
         }
+    }
+
+    private void DamageVisual(int damageTook)
+    {
+        
     }
 
     public virtual void Die()

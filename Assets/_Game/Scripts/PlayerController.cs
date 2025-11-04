@@ -1,60 +1,38 @@
-using System;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(InputController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("***Settings***")]
-    [SerializeField] private float rotationSpeed = 0.1f;
-    [SerializeField] private float smoothTime = 0.05f;
-    [SerializeField] private Ease easing = Ease.OutQuad;
+    [SerializeField] private float rotationSpeed = 180f; // derece/saniye
 
+    private InputController inputController;
 
-    void Start()
+    private PlayerInput playerInput;
+
+    private void Awake()
     {
-
+        playerInput = GetComponent<PlayerInput>();
+        inputController = GetComponent<InputController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        GetInput();
-    }
 
-    private void GetInput()
+
+    private void Update()
     {
         RotatePlayer();
     }
 
-
     private void RotatePlayer()
     {
-        float rotationAmount = GetRotationAmount();
-        if (rotationAmount != 0)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(0,0, rotationAmount *rotationSpeed));
-        }
-    }
+        float input = inputController.rotationInput;
 
-    float tempXPoint = -1;
-    private float GetRotationAmount()
-    {
-        float difference;
-        if (Input.touchCount > 0)
+        // Ölü bölge kontrolü (küçük stick salýnýmlarýný yok saymak için)
+        if (Mathf.Abs(input) > 0.05f)
         {
-            if (tempXPoint < 0)
-            {
-                tempXPoint = Input.GetTouch(0).position.x;
-            }
-            difference = Input.GetTouch(0).position.x - tempXPoint;
-            //Debug.Log(difference);
-            return difference;
-
+            // 2D’de Z ekseni etrafýnda, 3D’de Y ekseni etrafýnda dönersin
+            transform.Rotate(Vector3.forward, -input * rotationSpeed * Time.deltaTime);
         }
-        else if (Input.touchCount <= 0)
-        {
-            tempXPoint = -1;
-        }
-        return 0; // means no rotation
     }
 }

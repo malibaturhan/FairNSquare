@@ -52,7 +52,7 @@ MonoBehaviour:
   delayBetweenHits: 1
   movementFactor: 1
   damageTookText: {fileID: 0}
-  moveSpeed: 1
+  moveSpeed: 3
   seperationForce: {x: 0, y: 0, z: 0}
   seperationWeight: 0.1
   cohesionWeight: 0.1

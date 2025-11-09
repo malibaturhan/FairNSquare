@@ -13,6 +13,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     [SerializeField] private int damageToGive = 10;
     [SerializeField] private float delayBetweenHits = 1f;
     [SerializeField] private float movementFactor = 1f;
+    [SerializeField] private float xpWillBeGainedAfterKill;
     private Coroutine damageCoroutine;
 
     [Header("***Elements***")]
@@ -35,7 +36,9 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     {
         initialPosition = transform.position;
         contactFilter.SetLayerMask(EnemyLayerMask);
+        SetXpToGet();
     }
+
 
     void FixedUpdate()
     {
@@ -66,6 +69,11 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
         }
     }
 
+    private void SetXpToGet()
+    {
+        // This is an experimental value to get things running
+        xpWillBeGainedAfterKill = health * 0.1f + moveSpeed + damageToGive * 0.5f;
+    }
 
     private IEnumerator DealDamage()
     {
@@ -178,6 +186,8 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
 
     public virtual void Die()
     {
+        PlayerManager.Instance.IncreaseXP(xpWillBeGainedAfterKill);
+        DataManager.Instance.IncreaseKill();
         transform.SetParent(null);
         Destroy(gameObject);
     }
@@ -190,6 +200,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
 
     public void SlowDown(float factor, float duration)
     {
+        Debug.Log("Enemy slowed down");
         StartCoroutine(SlowRoutine(factor, duration));
     }
 

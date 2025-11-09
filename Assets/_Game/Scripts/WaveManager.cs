@@ -47,14 +47,17 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
 
     void Update()
     {
-        PassLevelTime();
-        
+        if (GameStateManager.Instance.CurrentGameState == GameState.Play)
+        {
+            PassLevelTime();
+        }
+
     }
 
     private void FixedUpdate()
     {
-        timeSinceLastSpawn += Time.fixedDeltaTime;
-        if(timeSinceLastSpawn > intervalBetweenSpawns) 
+
+        if (timeSinceLastSpawn > intervalBetweenSpawns)
         {
             timeSinceLastSpawn = 0f;
             SpawnEnemy();
@@ -91,12 +94,12 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     private Vector3 GetEnemySpawnCoordinate()
     {
         int degree = GetEnemySpawnDegree();
-        float rad = degree * Mathf.Deg2Rad; 
+        float rad = degree * Mathf.Deg2Rad;
 
         float x = Mathf.Cos(rad);
         float y = Mathf.Sin(rad);
 
-        Debug.Log($"ENEMY WILL SPAWN AT {x:F2}, {y:F2} (degree: {degree})");
+        //Debug.Log($"ENEMY WILL SPAWN AT {x:F2}, {y:F2} (degree: {degree})");
 
         return new Vector3(x, y, 0f) * enemySpawnDistance;
     }
@@ -104,13 +107,15 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
     private void SpawnEnemy()
     {
         var enemy = Instantiate(zombie, GetEnemySpawnCoordinate(), Quaternion.identity);
+        enemy.transform.SetParent(enemyContainer);
     }
 
     private void PassLevelTime()
     {
+        timeSinceLastSpawn += Time.deltaTime;
         elapsedTimeSinceLevelStarted += Time.deltaTime;
     }
 
-    
+
 
 }

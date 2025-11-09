@@ -18,7 +18,9 @@ public class ShotgunBehaviour : GunBehaviour
             Quaternion rotation = Quaternion.Euler(0, 0, randomSpread);
             Vector2 spreadDir = rotation * direction;
 
-            GameObject bullet = Object.Instantiate(slot.GunInSlot.bulletPrefab, slot.transform.position, Quaternion.identity);
+            GameObject bullet = Object.Instantiate(slot.GunInSlot.bulletPrefab,
+                                                   slot.transform.position,
+                                                   Quaternion.identity);
             bullet.transform.parent = bulletContainer;
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)

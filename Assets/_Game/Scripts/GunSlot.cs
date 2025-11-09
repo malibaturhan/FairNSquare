@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PolygonCollider2D))]
 public class GunSlot : MonoBehaviour
 {
 
@@ -38,22 +37,30 @@ public class GunSlot : MonoBehaviour
     [Header("***Elements***")]
     [SerializeField] public GunSO GunInSlot;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private PolygonCollider2D polygonCollider;
     [SerializeField] private Transform bulletContainer;
+    [SerializeField] private LineRenderer aimSightLineRenderer;
 
     [Header("***Settings")]
     [SerializeField] private Sprite emptySlotSprite;
     private GunSlotStates currentState;
     [SerializeField] private GunSlotOrientation orientation;
     private Vector2 direction;
-
+    [SerializeField] private float sightDistance;
 
     void Start()
     {
-
-        polygonCollider.isTrigger = true;
+        InitializeLineRenderer();
         SetOrientation();
         CheckSlot();
+    }
+
+    private void InitializeLineRenderer()
+    {
+        if (GunInSlot != null) 
+        {
+        aimSightLineRenderer.colorGradient = GunInSlot.aimSightLineRendererGradient;
+
+        }
     }
 
     private void SetOrientation()
@@ -63,18 +70,22 @@ public class GunSlot : MonoBehaviour
         {
             case GunSlotOrientation.TOP:
                 direction = transform.TransformDirection(Vector2.up);
+                aimSightLineRenderer.SetPosition(1, direction * sightDistance);
                 spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, 90);
                 break;
             case GunSlotOrientation.BOTTOM:
                 direction = transform.TransformDirection(Vector2.down);
+                aimSightLineRenderer.SetPosition(1, direction * sightDistance);
                 spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, -90);
                 break;
             case GunSlotOrientation.RIGHT:
                 direction = transform.TransformDirection(Vector2.right);
+                aimSightLineRenderer.SetPosition(1, direction * sightDistance);
                 spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 break;
             case GunSlotOrientation.LEFT:
                 direction = transform.TransformDirection(Vector2.left);
+                aimSightLineRenderer.SetPosition(1, direction * sightDistance);
                 spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, -180);
                 break;
 
@@ -121,6 +132,11 @@ public class GunSlot : MonoBehaviour
         if (GunInSlot != null)
         {
             SetGun();
+            aimSightLineRenderer.enabled = true;
+        }
+        else
+        {
+            aimSightLineRenderer.enabled = false;
         }
     }
 
@@ -143,7 +159,7 @@ public class GunSlot : MonoBehaviour
         currentCriticalBonus = GunInSlot.criticalDamageAdditionPercentage;
         currentGoThroughEnemiesCount = GunInSlot.goThroughEnemiesCount;
         bulletPrefab = GunInSlot.bulletPrefab;
-        currentColor = GunInSlot.color;
+        currentColor = GunInSlot.gunColorTint;
         isUnlocked = GunInSlot.isUnlocked;
         currentUnlockCost = GunInSlot.unlockCost;
     }

@@ -1,12 +1,64 @@
+using System;
+using UnityCommunity.UnitySingleton;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputController : MonoBehaviour
+public class InputController : PersistentMonoSingleton<InputController>
 {
     public float rotationInput { get; private set; }
     public bool pulsePressed { get; private set; }
     public bool spinAttackPressed { get; private set; }
     public bool powerUpPressed { get; private set; }
+
+
+    [Header("***Events***")]
+    public static Action<bool> SlowDownActivatedAction;
+
+    private PlayerInput playerInput;
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+    }
+
+    private void OnEnable()
+    {
+        GameStateManager.OnGameStateChanged += GameStateChangedCallback;
+    }
+
+    private void OnDisable()
+    {
+        GameStateManager.OnGameStateChanged -= GameStateChangedCallback;
+    }
+
+    private void GameStateChangedCallback(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.MainMenu:
+                playerInput.SwitchCurrentActionMap("UI");
+                break;
+
+            case GameState.Play:
+                playerInput.SwitchCurrentActionMap("Player");
+                break;
+
+            case GameState.Pause:
+                playerInput.SwitchCurrentActionMap("UI");
+                break;
+
+            case GameState.LevelUp:
+                playerInput.SwitchCurrentActionMap("UI");
+                break;
+
+            default:
+                Debug.LogWarning($"Unhandled GameState: {state}");
+                break;
+        }
+
+        Debug.Log($"Action Map is: {playerInput.currentActionMap.name}");
+    }
+
 
     public void OnRotate(InputAction.CallbackContext ctx)
     {
@@ -40,8 +92,28 @@ public class InputController : MonoBehaviour
     {
         if (ctx.performed)
         {
-            Debug.Log("Pause triggered!");
-            // Burada oyunu durdurma, menüyü açma vs. iþlemleri yapýlacak.
+            if (GameStateManager.Instance.CurrentGameState == GameState.Play)
+            {
+                GameStateManager.Instance.SetGameState(GameState.Pause);
+            }
+            else
+            {
+                GameStateManager.Instance.SetGameState(GameState.Play);
+            }
+        }
+    }
+    public void OnUseSlowDown(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            Debug.Log("SlowDown pressed!");
+            SlowDownActivatedAction?.Invoke(true);
+        }
+        if (ctx.canceled)
+        {
+            Debug.Log("SlowDown UNpressed!");
+            SlowDownActivatedAction?.Invoke(false);
+
         }
     }
 }

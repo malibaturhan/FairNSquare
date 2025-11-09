@@ -14,7 +14,8 @@ public class GunSO : ScriptableObject
     public float criticalDamageAdditionPercentage;
     public int goThroughEnemiesCount;
     public GameObject bulletPrefab;
-    public Color color;
+    public Color gunColorTint;
+    public Gradient aimSightLineRendererGradient;
     public int unlockCost;
     public bool isUnlocked;
 

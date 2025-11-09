@@ -35,6 +35,6 @@ public class PlayerHealth : PersistentMonoSingleton<PlayerHealth>
 
     private void Die()
     {
-        GameStateManager.Instance.SetGameState(GameState.Dead);
+        GameStateManager.Instance.SetGameState(GameState.GameOver);
     }
 }

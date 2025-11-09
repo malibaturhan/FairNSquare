@@ -4,9 +4,10 @@ using UnityEngine;
 public class GunSlot : MonoBehaviour
 {
 
-    public enum GunSlotStates
+    public enum GunSlotState
     {
         Empty,
+        Passive,
         Active
     }
 
@@ -42,7 +43,7 @@ public class GunSlot : MonoBehaviour
 
     [Header("***Settings")]
     [SerializeField] private Sprite emptySlotSprite;
-    private GunSlotStates currentState;
+    public GunSlotState CurrentState;
     [SerializeField] private GunSlotOrientation orientation;
     private Vector2 direction;
     [SerializeField] private float sightDistance;
@@ -56,9 +57,9 @@ public class GunSlot : MonoBehaviour
 
     private void InitializeLineRenderer()
     {
-        if (GunInSlot != null) 
+        if (GunInSlot != null)
         {
-        aimSightLineRenderer.colorGradient = GunInSlot.aimSightLineRendererGradient;
+            aimSightLineRenderer.colorGradient = GunInSlot.aimSightLineRendererGradient;
 
         }
     }
@@ -97,11 +98,14 @@ public class GunSlot : MonoBehaviour
     {
         SetOrientation();
         timeSinceFiring -= Time.deltaTime;
-        if (GunInSlot != null && currentState == GunSlotStates.Active)
+        if (GunInSlot != null && CurrentState == GunSlotState.Active)
         {
             if (timeSinceFiring <= 0f)
             {
-                Fire();
+                if (CurrentState == GunSlotState.Active)
+                {
+                    Fire();
+                }
                 timeSinceFiring = 1f / currentFireRate;
                 //Debug.LogWarning($"timesincefiring set to {timeSinceFiring}");
             }
@@ -115,14 +119,14 @@ public class GunSlot : MonoBehaviour
 
     }
 
-    private void OnSlotStateChanged(GunSlotStates newGunSlotState)
+    private void OnSlotStateChanged(GunSlotState newGunSlotState)
     {
-        currentState = newGunSlotState;
+        CurrentState = newGunSlotState;
         switch (newGunSlotState)
         {
-            case GunSlotStates.Empty:
+            case GunSlotState.Empty:
                 break;
-            case GunSlotStates.Active:
+            case GunSlotState.Active:
 
                 break;
         }
@@ -144,7 +148,7 @@ public class GunSlot : MonoBehaviour
     {
         InitializeFromSO();
         spriteRenderer.sprite = GunInSlot.gunSprite;
-        OnSlotStateChanged(GunSlotStates.Active);
+        OnSlotStateChanged(GunSlotState.Active);
     }
 
 

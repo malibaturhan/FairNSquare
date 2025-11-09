@@ -10,6 +10,8 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
     [SerializeField] private CanvasGroup levelUpMenuCG;
     [SerializeField] private CanvasGroup pauseMenuCG;
     [SerializeField] private CanvasGroup mainMenuCG;
+    [SerializeField] private CanvasGroup gameOverCG;
+    [SerializeField] private CanvasGroup[] allMenuCanvasGroupes;
 
 
     private void OnEnable()
@@ -50,6 +52,12 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
                 ShowUpgradeMenu();
                 break;
 
+            case GameState.GameOver:
+                HidePauseMenu();
+                HideMainMenu();
+                HideUpgradeMenu();
+                break;
+
             default:
                 Debug.LogWarning($"Unhandled GameState: {state}");
                 break;
@@ -57,7 +65,18 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
 
     }
 
-
+    private void ShowMenu(CanvasGroup cgToShow)
+    {
+        foreach(var cg in allMenuCanvasGroupes)
+        {
+            cg.alpha = 0f;
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
+        }
+        cgToShow.alpha = 0f;
+        cgToShow.interactable = false;
+        cgToShow.blocksRaycasts = false;
+    }
 
     public void StartGameButtonCallback()
     {

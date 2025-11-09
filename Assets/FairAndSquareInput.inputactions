@@ -52,9 +52,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseSlowDown",
+                    "name": "ChangeToRightWeapon",
                     "type": "Button",
                     "id": "b2a4aab4-667a-4590-a678-806bd05863e6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeToLeftWeapon",
+                    "type": "Button",
+                    "id": "fa79d8e9-6cd2-4b1b-a1e6-e857ac1d4297",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -234,18 +243,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "UseSlowDown",
+                    "action": "ChangeToRightWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "eab18458-a875-4fe5-a219-d48db9a6f494",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "UseSlowDown",
+                    "action": "ChangeToRightWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89e22a19-28b3-44f2-bf78-8b9e0bd0236f",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ChangeToLeftWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9208307-46af-4ec1-a814-a93002ecdf7b",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ChangeToLeftWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

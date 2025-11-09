@@ -102,18 +102,18 @@ public class InputController : PersistentMonoSingleton<InputController>
             }
         }
     }
-    public void OnUseSlowDown(InputAction.CallbackContext ctx)
+    public void OnChangeToRightButton(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
-            Debug.Log("SlowDown pressed!");
-            SlowDownActivatedAction?.Invoke(true);
+            Debug.Log("Changed to right gun");
         }
-        if (ctx.canceled)
+    }
+    public void OnChangeToLeftButton(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
         {
-            Debug.Log("SlowDown UNpressed!");
-            SlowDownActivatedAction?.Invoke(false);
-
+            Debug.Log("Changed to left gun");
         }
     }
 }

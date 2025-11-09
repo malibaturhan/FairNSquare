@@ -20,8 +20,8 @@ public class SquareCorners : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.05f);
-        Gizmos.DrawLine(transform.position, direction);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawSphere(transform.position, 0.05f);
+        //Gizmos.DrawLine(transform.position, direction);
     }
 }

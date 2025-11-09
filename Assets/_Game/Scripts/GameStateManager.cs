@@ -8,7 +8,7 @@ public enum GameState
     Play,
     Pause,
     LevelUp,
-    Dead
+    GameOver
 }
 
 public class GameStateManager : PersistentMonoSingleton<GameStateManager>
@@ -31,7 +31,7 @@ public class GameStateManager : PersistentMonoSingleton<GameStateManager>
 
     private void CheckPauseCondition()
     {
-        if(CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Pause || CurrentGameState == GameState.Dead)
+        if(CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Pause || CurrentGameState == GameState.GameOver)
         {
             Time.timeScale = 0;
         }

@@ -116,6 +116,18 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
         elapsedTimeSinceLevelStarted += Time.deltaTime;
     }
 
+    public void Reset()
+    {
+        StartWave();
+        RemoveAllEnemies();
+    }
 
+    private void RemoveAllEnemies()
+    {
+        for (int i = enemyContainer.childCount - 1; i >= 0; i--)
+        {
+            enemyContainer.GetChild(i).GetComponent<Enemy>().Detonate();
+        }
+    }
 
 }

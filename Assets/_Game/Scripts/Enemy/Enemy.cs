@@ -11,6 +11,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     [Header("***Settings***")]
     [SerializeField] private int health = 10;
     [SerializeField] private int damageToGive = 10;
+    [SerializeField] private Color takingDamageColor = Color.red;
     [SerializeField] private float delayBetweenHits = 1f;
     [SerializeField] private float movementFactor = 1f;
     [SerializeField] private float xpWillBeGainedAfterKill;
@@ -20,6 +21,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     private Vector2 initialPosition;
     private List<Collider2D> neighbours = new();
     [SerializeField] TextMeshPro damageTookText;
+    [SerializeField] SpriteRenderer renderer;
 
     [Header("+++Movement+++")]
     private ContactFilter2D contactFilter;
@@ -34,6 +36,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
 
     void Start()
     {
+        damageTookText.gameObject.SetActive(false);
         initialPosition = transform.position;
         contactFilter.SetLayerMask(EnemyLayerMask);
         SetXpToGet();
@@ -85,7 +88,7 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
         }
     }
 
-  
+
     public void Move()
     {
         seperationForce = Vector3.zero; // to prevent accumulation
@@ -172,16 +175,36 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     {
         Debug.Log($"{gameObject.name} took damage: {damageTook}");
         health -= damageTook;
-        DamageVisual(damageTook);
+        TriggerDamageVisuals(damageTook);
         if (health <= 0)
         {
             Die();
         }
     }
 
-    private void DamageVisual(int damageTook)
+    private void TriggerDamageVisuals(int damageTook)
     {
-        
+        StartCoroutine(CreateText(damageTook));
+        StartCoroutine(WaveColors(damageTook));
+    }
+
+    private IEnumerator CreateText(int damageTook)
+    {
+        damageTookText.gameObject.SetActive(true);
+        damageTookText.text = damageTook.ToString();
+
+        Debug.LogWarning("**********************DAMAGE STRING SHOWN");
+
+        yield return new WaitForSeconds(0.3f);
+        damageTookText.gameObject.SetActive(false);
+    }
+
+    private IEnumerator WaveColors(int damageTook)
+    {
+        var initialColor = renderer.color;
+        renderer.color = takingDamageColor;
+        yield return new WaitForSeconds(0.3f);
+        renderer.color = initialColor;
     }
 
     public virtual void Die()
@@ -189,6 +212,12 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
         PlayerManager.Instance.IncreaseXP(xpWillBeGainedAfterKill);
         DataManager.Instance.IncreaseKill();
         transform.SetParent(null);
+        Destroy(gameObject);
+    }
+    public virtual void Detonate()
+    {
+        transform.SetParent(null);
+        Debug.Log("detonated: " + gameObject.name);
         Destroy(gameObject);
     }
 

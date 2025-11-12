@@ -47,11 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30fe25393c11c4b4ca9d23d1ba3d25ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 25
   damageToGive: 10
+  takingDamageColor: {r: 1, g: 0, b: 0, a: 1}
   delayBetweenHits: 1
   movementFactor: 1
-  damageTookText: {fileID: 0}
+  xpWillBeGainedAfterKill: 0
+  damageTookText: {fileID: 1786100635099978771}
+  renderer: {fileID: 7620052967796869646}
   moveSpeed: 3
   seperationForce: {x: 0, y: 0, z: 0}
   seperationWeight: 0.1
@@ -107,12 +110,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.4555167, y: -0.24098247}
-      - {x: 0.046691775, y: 0.4180665}
-      - {x: -0.06204143, y: 0.41645193}
-      - {x: -0.44691086, y: -0.2677834}
-      - {x: -0.39947307, y: -0.39592946}
-      - {x: 0.4104008, y: -0.38826942}
+    - - {x: 0.5279949, y: -0.25910205}
+      - {x: 0.08293089, y: 0.4724252}
+      - {x: -0.09224069, y: 0.4889301}
+      - {x: -0.51938915, y: -0.26174355}
+      - {x: -0.39947307, y: -0.45028812}
+      - {x: 0.39228126, y: -0.46074772}
   m_UseDelaunayMesh: 0
 --- !u!1 &1521763620778269863
 GameObject:
@@ -149,7 +152,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.008, y: 0.559}
-  m_SizeDelta: {x: 0.7635, y: 0.1755}
+  m_SizeDelta: {x: 1.6332, y: 0.8036}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &2606641280998845097
 MeshRenderer:
@@ -225,8 +228,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -243,7 +246,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1.55
+  m_fontSize: 7.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

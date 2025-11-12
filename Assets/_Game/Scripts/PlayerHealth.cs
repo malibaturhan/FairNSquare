@@ -10,27 +10,52 @@ public class PlayerHealth : PersistentMonoSingleton<PlayerHealth>
     [SerializeField] public TextMeshProUGUI healthText;
 
     [Header("***Settings***")]
-    [SerializeField] private int health = 40;
+    [SerializeField] private int maxHealth = 40;
+    [SerializeField] private float timeBetweenHeal = 5;
+    private int currentHealth;
+
+    [Header("***Runtime Elements***")]
+    private float timePassedSinceHeal = 0;
 
     void Start()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        currentHealth = maxHealth;
         SetHealthText();
     }
 
     public void TakeDamage(int amount)
     {
-        health -= amount;
+        currentHealth -= amount;
         SetHealthText();
-        if(health <= 0 )
+        if(currentHealth <= 0 )
         {
-            health = 0;
+            currentHealth = 0;
             Die();
         }
     }
 
+    private void FixedUpdate()
+    {
+        timePassedSinceHeal += Time.fixedDeltaTime;
+        if(Time.fixedDeltaTime < timeBetweenHeal)
+        {
+            if(currentHealth < maxHealth)
+            {
+                currentHealth++;
+                timePassedSinceHeal = 0f;
+            }
+        }
+        SetHealthText();
+    }
+
     private void SetHealthText()
     {
-        healthText.text = health.ToString();
+        healthText.text = currentHealth.ToString();
     }
 
     private void Die()

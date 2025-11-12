@@ -9,6 +9,9 @@ public class DataManager : PersistentMonoSingleton<DataManager>
 {
     [Header("***Elements***")]
     [SerializeField] private TextMeshProUGUI killMeterText;
+    [SerializeField] private TextMeshProUGUI gameOverScoreText;
+    [SerializeField] private TextMeshProUGUI menuBestScore;
+    [SerializeField] private TextMeshProUGUI gameOverBestScore;
 
 
     [Header("***COUNTERS - do NOT OVERRIDE!! ***")]
@@ -31,6 +34,7 @@ public class DataManager : PersistentMonoSingleton<DataManager>
 
     private void GameStateChangedCallback(GameState state)
     {
+        UpdateKillUI();
         switch (state)
         {
             case GameState.MainMenu:
@@ -44,6 +48,10 @@ public class DataManager : PersistentMonoSingleton<DataManager>
                 break;
 
             case GameState.LevelUp:
+                break;
+
+            case GameState.GameOver:
+                //Update
                 break;
 
             default:
@@ -81,6 +89,12 @@ public class DataManager : PersistentMonoSingleton<DataManager>
 
     private void ResetKillCount()
     {
+        currentKillCount = 0;
+    }
+
+    internal void Reset()
+    {
+        SaveHighScore();
         currentKillCount = 0;
     }
 }

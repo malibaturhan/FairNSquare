@@ -29,33 +29,23 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
         switch (state)
         {
             case GameState.MainMenu:
-                HidePauseMenu();
-                HideUpgradeMenu();
-                ShowMainMenu();
+                ShowMenu(mainMenuCG);
                 break;
 
             case GameState.Play:
-                HidePauseMenu();
-                HideUpgradeMenu();
-                HideMainMenu();
+                ShowMenu(null);
                 break;
 
             case GameState.Pause:
-                HideMainMenu();
-                HideUpgradeMenu();
-                ShowPauseMenu();
+                ShowMenu(pauseMenuCG);
                 break;
 
             case GameState.LevelUp:
-                HidePauseMenu();
-                HideMainMenu();
-                ShowUpgradeMenu();
+                ShowMenu(levelUpMenuCG);
                 break;
 
             case GameState.GameOver:
-                HidePauseMenu();
-                HideMainMenu();
-                HideUpgradeMenu();
+                ShowMenu(gameOverCG);
                 break;
 
             default:
@@ -65,24 +55,44 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
 
     }
 
+    private void ShowGameOver()
+    {
+        throw new NotImplementedException();
+    }
+
     private void ShowMenu(CanvasGroup cgToShow)
     {
-        foreach(var cg in allMenuCanvasGroupes)
+        foreach (var cg in allMenuCanvasGroupes)
         {
             cg.alpha = 0f;
             cg.interactable = false;
             cg.blocksRaycasts = false;
         }
-        cgToShow.alpha = 0f;
-        cgToShow.interactable = false;
-        cgToShow.blocksRaycasts = false;
+
+        if (cgToShow == null)
+        {
+            return; // with this option we can hide all menus and just show game ui,
+        }
+        //Debug.Log("now shown: " +cgToShow.gameObject.name);
+        cgToShow.alpha = 1f;
+        cgToShow.interactable = true;
+        cgToShow.blocksRaycasts = true;
     }
 
     public void StartGameButtonCallback()
     {
         Debug.Log("Start GAme");
+        ResetGame();
         GameStateManager.Instance.SetGameState(GameState.Play);
     }
+
+    public void ResetCallback()
+    {
+        PlayerHealth.Instance.Reset();
+        DataManager.Instance.Reset();
+        WaveManager.Instance.Reset();
+    }
+
     public void ResumeGameButtonCallback()
     {
         GameStateManager.Instance.SetGameState(GameState.Play);
@@ -144,4 +154,10 @@ public class MenuManager : PersistentMonoSingleton<MenuManager>
 
         Time.timeScale = 0f; ;
     }
+
+    private void ResetGame()
+    {
+        
+    }
+
 }

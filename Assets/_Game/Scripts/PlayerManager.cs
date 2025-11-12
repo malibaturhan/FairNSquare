@@ -71,7 +71,8 @@ public class PlayerManager : PersistentMonoSingleton<PlayerManager>
         currentPlayerLevel++;
         neededXPForLevelDown = neededXPForLevelUp;
         neededXPForLevelUp = neededXPForLevelUp * (1 + incrementPercentageForNextLevel);
-        //MenuManager.Instance.ShowUpgradeMenu();
+        //TRIGGER LEVEL UP FROM STATE
+        GameStateManager.Instance.SetGameState(GameState.LevelUp);
     }
 
     private void UpdateUI()

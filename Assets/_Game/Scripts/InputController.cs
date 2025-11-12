@@ -51,12 +51,15 @@ public class InputController : PersistentMonoSingleton<InputController>
                 playerInput.SwitchCurrentActionMap("UI");
                 break;
 
+            case GameState.GameOver:
+                playerInput.SwitchCurrentActionMap("UI");
+                break;
+
             default:
                 Debug.LogWarning($"Unhandled GameState: {state}");
                 break;
         }
 
-        Debug.Log($"Action Map is: {playerInput.currentActionMap.name}");
     }
 
 

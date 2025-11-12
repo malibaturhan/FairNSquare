@@ -29,14 +29,20 @@ public class GameStateManager : PersistentMonoSingleton<GameStateManager>
         OnGameStateChanged?.Invoke(state);
     }
 
+    public void ContinueToGameCallback()
+    {
+        SetGameState(GameState.Play);
+    }
+
     private void CheckPauseCondition()
     {
-        if(CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Pause || CurrentGameState == GameState.GameOver)
+        if(CurrentGameState == GameState.MainMenu || CurrentGameState == GameState.Pause || CurrentGameState == GameState.GameOver || CurrentGameState == GameState.LevelUp)
         {
             Time.timeScale = 0;
         }
         else
         {
+            Debug.Log("*****************GAME STATE CHANGED TO PLAY!!!");
             Time.timeScale = 1;
         }
     }

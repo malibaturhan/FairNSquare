@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52583a3c0ed5b014989e18e303bd518b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UnparentOnAwake: 1
 --- !u!1 &198241954
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,6 +2348,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38546f5842beb047b26b28661e9783b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &695701726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 695701727}
+  - component: {fileID: 695701728}
+  m_Layer: 0
+  m_Name: GameUpgradesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &695701727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695701726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1569972529}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &695701728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695701726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66d590f63ea44414d9a231aa1354d7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgrades:
+  - {fileID: 11400000, guid: 9c321a7819f322a4eb180c543f93adf3, type: 2}
+  option1Text: {fileID: 1516103195}
+  option2Text: {fileID: 1351685672}
 --- !u!1 &730286230
 GameObject:
   m_ObjectHideFlags: 0
@@ -4874,7 +4923,7 @@ GameObject:
   - component: {fileID: 1351685673}
   - component: {fileID: 1351685672}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: option2text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5147,6 +5196,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
+      - m_Target: {fileID: 695701728}
+        m_TargetAssemblyTypeName: GameUpgradesManager, Assembly-CSharp
+        m_MethodName: Option1ButtonCallback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1413992659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5501,7 +5562,7 @@ GameObject:
   - component: {fileID: 1516103196}
   - component: {fileID: 1516103195}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: option1text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5659,6 +5720,7 @@ Transform:
   - {fileID: 198241955}
   - {fileID: 1385524893}
   - {fileID: 1687715638}
+  - {fileID: 695701727}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1571551675
@@ -5747,6 +5809,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1687715639}
         m_TargetAssemblyTypeName: GameStateManager, Assembly-CSharp
         m_MethodName: ContinueToGameCallback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 695701728}
+        m_TargetAssemblyTypeName: GameUpgradesManager, Assembly-CSharp
+        m_MethodName: Option2ButtonCallback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

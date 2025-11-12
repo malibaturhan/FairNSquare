@@ -1,22 +1,24 @@
+using UnityCommunity.UnitySingleton;
 using UnityEngine;
 
-public class PlayerUpgradeManager : MonoBehaviour
+public class PlayerUpgradeManager : PersistentMonoSingleton<PlayerUpgradeManager>
 {
 
-    //[Header("***Gun Upgrades***")]
-
-    //[Header("***New Guns***")]
-
-    //[Header("General Upgrades")]
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void ApplyUpgrade(UpgradeSO upgrade)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        switch (upgrade.upgradeType)
+        {
+            case UpgradeTypes.Health:
+                break;
+            case UpgradeTypes.HealInterval:
+                break;
+            case UpgradeTypes.FireRate:
+                break;
+            case UpgradeTypes.GunDamage:
+                break;
+            case UpgradeTypes.Luck:
+                break;
+        }
+        Debug.Log("UPGRADE APPLIED");
     }
 }

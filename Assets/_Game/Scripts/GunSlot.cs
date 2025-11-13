@@ -43,10 +43,12 @@ public class GunSlot : MonoBehaviour
 
     [Header("***Settings")]
     [SerializeField] private Sprite emptySlotSprite;
-    public GunSlotState CurrentState;
+    private GunSlotState currentState;
     [SerializeField] private GunSlotOrientation orientation;
     private Vector2 direction;
     [SerializeField] private float sightDistance;
+
+    public GunSlotState CurrentState => currentState;
 
     void Start()
     {
@@ -93,16 +95,29 @@ public class GunSlot : MonoBehaviour
         }
     }
 
+    public void ChangeGunState(GunSlotState newState)
+    {
+        if (newState == GunSlotState.Active)
+        {
+            aimSightLineRenderer.enabled = true;
+        }
+        else
+        {
+            aimSightLineRenderer.enabled = false;
+        }
+        currentState = newState;
+    }
+
 
     void Update()
     {
         SetOrientation();
         timeSinceFiring -= Time.deltaTime;
-        if (GunInSlot != null && CurrentState == GunSlotState.Active)
+        if (GunInSlot != null && currentState == GunSlotState.Active)
         {
             if (timeSinceFiring <= 0f)
             {
-                if (CurrentState == GunSlotState.Active)
+                if (currentState == GunSlotState.Active)
                 {
                     Fire();
                 }
@@ -116,12 +131,11 @@ public class GunSlot : MonoBehaviour
     private void Fire()
     {
         GunInSlot.gunBehaviour.Fire(this, direction, bulletContainer);
-
     }
 
     private void OnSlotStateChanged(GunSlotState newGunSlotState)
     {
-        CurrentState = newGunSlotState;
+        currentState = newGunSlotState;
         switch (newGunSlotState)
         {
             case GunSlotState.Empty:

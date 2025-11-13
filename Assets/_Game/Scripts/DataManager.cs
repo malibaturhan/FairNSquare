@@ -19,7 +19,7 @@ public class DataManager : PersistentMonoSingleton<DataManager>
 
     void Start()
     {
-
+        UpdateTexts();
     }
 
     private void OnEnable()
@@ -62,9 +62,12 @@ public class DataManager : PersistentMonoSingleton<DataManager>
     }
 
 
-    void Update()
+    void UpdateTexts()
     {
-
+        killMeterText.text =     $"Score: {currentKillCount.ToString()}";
+        gameOverScoreText.text = $"Score: {currentKillCount.ToString()}";
+        menuBestScore.text =     $"Best Score: {HighScore.ToString()}";
+        gameOverBestScore.text = $"Best Score: {HighScore.ToString()}";
     }
 
     public void IncreaseKill()
@@ -97,4 +100,6 @@ public class DataManager : PersistentMonoSingleton<DataManager>
         SaveHighScore();
         currentKillCount = 0;
     }
+
+    public int HighScore => PlayerPrefs.GetInt("HighScore");
 }

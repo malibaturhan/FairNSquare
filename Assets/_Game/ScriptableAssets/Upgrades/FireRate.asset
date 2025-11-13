@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94d2c3e9347b8064b82c98c3ac93f33e, type: 3}
-  m_Name: HealthUpgrade
+  m_Name: FireRate
   m_EditorClassIdentifier: 
   rarity: 0
-  effectAmount: 2
-  upgradeType: 0
-  Name: Divine Shot
-  Description: Can take more
+  effectAmount: 1
+  upgradeType: 2
+  Name: Mitrailleuse
+  Description: Fire more rounds

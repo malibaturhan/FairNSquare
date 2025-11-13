@@ -61,6 +61,7 @@ public class WaveManager : PersistentMonoSingleton<WaveManager>
         {
             timeSinceLastSpawn = 0f;
             SpawnEnemy();
+            intervalBetweenSpawns -= 0.01f;
         }
     }
 

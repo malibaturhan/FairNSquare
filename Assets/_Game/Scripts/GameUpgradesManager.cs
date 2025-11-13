@@ -10,8 +10,10 @@ public class GameUpgradesManager : MonoBehaviour
 
 
     [Header("***Elements***")]
-    [SerializeField] private TextMeshProUGUI option1Text;
-    [SerializeField] private TextMeshProUGUI option2Text;
+    [SerializeField] private TextMeshProUGUI option1TitleText;
+    [SerializeField] private TextMeshProUGUI option2TitleText;
+    [SerializeField] private TextMeshProUGUI option1DescriptionText;
+    [SerializeField] private TextMeshProUGUI option2DescriptionText;
 
     [Header("***Selected Upgrades***")]
     private UpgradeSO option1Upgrade;
@@ -40,8 +42,10 @@ public class GameUpgradesManager : MonoBehaviour
 
     private void SetUpgradeTexts()
     {
-        option1Text.text = option1Upgrade.name;
-        option2Text.text = option2Upgrade.name;
+        option1TitleText.text = option1Upgrade.Name;
+        option2TitleText.text = option2Upgrade.Name;
+        option1DescriptionText.text = option1Upgrade.Description;
+        option2DescriptionText.text = option2Upgrade.Description;
     }
 
     public void Option1ButtonCallback()

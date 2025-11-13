@@ -15,7 +15,7 @@ public class PlayerHealth : PersistentMonoSingleton<PlayerHealth>
     private int currentHealth;
 
     [Header("***Runtime Elements***")]
-    private float timePassedSinceHeal = 0;
+    [SerializeField] private float timePassedSinceHeal = 0;
 
     void Start()
     {
@@ -42,7 +42,7 @@ public class PlayerHealth : PersistentMonoSingleton<PlayerHealth>
     private void FixedUpdate()
     {
         timePassedSinceHeal += Time.fixedDeltaTime;
-        if(Time.fixedDeltaTime < timeBetweenHeal)
+        if(timePassedSinceHeal > timeBetweenHeal)
         {
             if(currentHealth < maxHealth)
             {
@@ -53,9 +53,19 @@ public class PlayerHealth : PersistentMonoSingleton<PlayerHealth>
         SetHealthText();
     }
 
+    public void UpgradeMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        SetHealthText();
+    }
+    public void LowerHealInterval(float amount)
+    {
+        timeBetweenHeal -= amount;
+    }
+
     private void SetHealthText()
     {
-        healthText.text = currentHealth.ToString();
+        healthText.text = $"{currentHealth.ToString()} / {maxHealth.ToString()}";
     }
 
     private void Die()

@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityCommunity.UnitySingleton;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +12,7 @@ public class PlayerManager : PersistentMonoSingleton<PlayerManager>
 
     [Header("***Elements***")]
     [SerializeField] private float currentPlayerXP;
-    [SerializeField] private float currentPlayerLevel;
+    [SerializeField] private int currentPlayerLevel;
     [SerializeField] private GunSlot leftGunSlot;
     [SerializeField] private GunSlot topGunSlot;
     [SerializeField] private GunSlot rightGunSlot;
@@ -27,13 +26,22 @@ public class PlayerManager : PersistentMonoSingleton<PlayerManager>
     [SerializeField] private float initialXPForLevelUp = 100f;
     [SerializeField] private float neededXPForLevelDown; // to calculate xp bar fill
     [SerializeField] private float neededXPForLevelUp;
+
+    public int Level => currentPlayerLevel;
+
     void Start()
     {
         GunSlots = new GunSlot[] { leftGunSlot, topGunSlot, rightGunSlot, bottomGunSlot };
         neededXPForLevelDown = 0;
         neededXPForLevelUp = initialXPForLevelUp;
         UpdateUI();
+        InitializeGuns();
+    }
 
+    private void InitializeGuns()
+    {
+        ChangeActiveSlot(false);
+        ChangeActiveSlot(true);
     }
 
     public void PutGunOnSlot(GunSO newGun)
@@ -44,22 +52,26 @@ public class PlayerManager : PersistentMonoSingleton<PlayerManager>
         }
     }
 
-    private void ChangeActiveSlot(bool toRight)
+    public void ChangeActiveSlot(bool toRight)
     {
         foreach (var gunSlot in GunSlots)
         {
+
+            Debug.LogWarning($"Currently looping {gunSlot.name}");
             if (gunSlot.CurrentState == GunSlot.GunSlotState.Active)
             {
-                gunSlot.CurrentState = GunSlot.GunSlotState.Passive;
+                gunSlot.ChangeGunState(GunSlot.GunSlotState.Passive);
             }
         }
-        activeGunSlotIndex = toRight ? activeGunSlotIndex + 1 % GunSlots.Length : activeGunSlotIndex - 1 % GunSlots.Length;
+        activeGunSlotIndex = toRight? (activeGunSlotIndex + 1 + GunSlots.Length) % GunSlots.Length : (activeGunSlotIndex - 1 + GunSlots.Length) % GunSlots.Length;
+
+        GunSlots[activeGunSlotIndex].ChangeGunState(GunSlot.GunSlotState.Active);
     }
 
     internal void IncreaseXP(float xpGain)
     {
         currentPlayerXP += xpGain;
-        if (currentPlayerXP > incrementPercentageForNextLevel)
+        if (currentPlayerXP > neededXPForLevelUp)
         {
             LevelUp();
         }
@@ -78,7 +90,7 @@ public class PlayerManager : PersistentMonoSingleton<PlayerManager>
     private void UpdateUI()
     {
         levelText.text = "lvl " + currentPlayerLevel;
-        float interval = neededXPForLevelDown - neededXPForLevelUp;
+        float interval = neededXPForLevelUp - neededXPForLevelDown;
         float increment = currentPlayerXP - neededXPForLevelDown;
         float fillAmount = increment / interval;
         xpFillImage.fillAmount = fillAmount;

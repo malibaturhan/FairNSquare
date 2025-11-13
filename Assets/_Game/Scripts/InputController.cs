@@ -109,13 +109,14 @@ public class InputController : PersistentMonoSingleton<InputController>
     {
         if (ctx.performed)
         {
-            Debug.Log("Changed to right gun");
+            PlayerManager.Instance.ChangeActiveSlot(true);
         }
     }
     public void OnChangeToLeftButton(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
+            PlayerManager.Instance.ChangeActiveSlot(false);
             Debug.Log("Changed to left gun");
         }
     }

@@ -33,7 +33,6 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
     [SerializeField] private float detectionRange = 1f;
     [SerializeField] private LayerMask EnemyLayerMask;
 
-
     void Start()
     {
         damageTookText.gameObject.SetActive(false);
@@ -41,7 +40,6 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
         contactFilter.SetLayerMask(EnemyLayerMask);
         SetXpToGet();
     }
-
 
     void FixedUpdate()
     {
@@ -72,10 +70,14 @@ public abstract class Enemy : MonoBehaviour, IDamagable, ISlowable
         }
     }
 
+
+
+
+
     private void SetXpToGet()
     {
         // This is an experimental value to get things running
-        xpWillBeGainedAfterKill = health * 0.1f + moveSpeed + damageToGive * 0.5f;
+        xpWillBeGainedAfterKill = health * 0.1f + moveSpeed + damageToGive * 0.5f + PlayerManager.Instance.Level * 2;
     }
 
     private IEnumerator DealDamage()

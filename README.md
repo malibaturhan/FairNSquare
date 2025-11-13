@@ -1,4 +1,9 @@
 # Fair & Square
+---
+
+## ▶ Play the Prototype
+https://malibaturhan.itch.io/fair-square
+---
 
 **Fair & Square** is a small, fast-paced arena shooter prototype.  
 You rotate between four weapon slots on each side of your character, level up by defeating enemies, and try to survive increasingly difficult waves.
@@ -25,7 +30,3 @@ Mouse & gamepad supported
 ## 🎯 About
 This project was built as a compact learning prototype and as a foundation for future, larger gameplay systems.
 
----
-
-## ▶ Play the Prototype
-https://malibaturhan.itch.io/fair-square
